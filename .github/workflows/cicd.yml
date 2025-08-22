@@ -27,7 +27,7 @@ jobs:
            zip -r nodejs-app-build.zip .
            ls -la
            # Avoid printing secrets. If you just want to verify they exist:
-           test -n "$AWS_ACCESS_KEY_ID" && echo "AWS_ACCESS_KEY_ID present"
+           #test -n "$AWS_ACCESS_KEY_ID" && echo "AWS_ACCESS_KEY_ID present"
            test -n "$AWS_SECRET_ACCESS_KEY" && echo "AWS_SECRET_ACCESS_KEY present"
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
