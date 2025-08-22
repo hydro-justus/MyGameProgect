@@ -17,11 +17,18 @@ jobs:
           node-version: 20
       - name: Install Dependencies
         run: npm install
-      - name: Genrate Deployment Package
-        run: zip -r nodejs-app-build.zip .
-        run: ll -a
-        run: echo  ${{ secrets.AWS_ACCESS_KEY }}
-        run: echo  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Generate deployment package
+        shell: bash
+        env:
+           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+           set -e
+           zip -r nodejs-app-build.zip .
+           ls -la
+           # Avoid printing secrets. If you just want to verify they exist:
+           test -n "$AWS_ACCESS_KEY_ID" && echo "AWS_ACCESS_KEY_ID present"
+           test -n "$AWS_SECRET_ACCESS_KEY" && echo "AWS_SECRET_ACCESS_KEY present"
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
